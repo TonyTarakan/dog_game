@@ -1,0 +1,14 @@
+# usage example:
+# clang-uml -d cmake-build-debug/ -o cmake-build-debug/diagrams
+diagrams:
+  game_server_class:
+    type: class
+    glob:
+      - src/*.cpp
+      - src/*.h
+    include:
+      namespaces:
+        - http_server
+        - http_handler
+        - model
+        - app

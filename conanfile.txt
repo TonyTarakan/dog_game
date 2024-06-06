@@ -1,0 +1,9 @@
+[requires]
+libpqxx/7.9.0
+boost/1.78.0
+catch2/3.6.0
+
+[generators]
+CMakeDeps
+CMakeToolchain
+
