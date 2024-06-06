@@ -73,7 +73,7 @@ struct GatheringEvent {
     double time;
 };
 
-std::vector<GatheringEvent> FindGatherEvents(const ItemGathererProvider& provider);
+std::vector<GatheringEvent> FindSortedGatherEvents(const ItemGathererProvider& provider);
 
 }  // namespace collision_detector
 

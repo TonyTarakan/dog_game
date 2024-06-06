@@ -1,17 +1,14 @@
-
 /* TODO
- * - Change to C++23
  * - Improve architecture
- * - Add unit tests
- * - Add benchmarks
+ * - Add more unit tests
+ * - Add benchmarks and load tests
  * - Group pytest tests
  * - Optimize for performance (strand for each session, etc.)
  * - Change from boost json to nlohmann
  * - Change from boost serialization to protobuf
  * - Change from boost beast to crow or another web framework
- * - Improve logging, maybe replace boost log
- * - Add some options for config
  * - Try something for geometry
+ * - Improve logging, maybe replace boost log
  * - Add the Rust version of the game
  */
 
@@ -160,7 +157,7 @@ int main(int argc, const char* argv[]) {
         sig::scoped_connection conn1 = app.GetGame()->DoOnTick(
             [&autosaver, &app](milliseconds delta) mutable {
                 autosaver.OnTick(delta);
-//                app.RetireDogs();
+                app.RetireDogs();
             }
         );
 

@@ -103,8 +103,8 @@ model::GameState App::GetGameState(std::string_view token) const {
         dogs.emplace(std::to_string(dog.GetIdValue()), dog);
     }
     std::map<std::string, model::LootItem> loots;
-    for (const auto& item : session->GetLoots()) {
-        loots.emplace(std::to_string(item.first), item.second);
+    for (const auto& [item_id, item] : session->GetLoots()) {
+        loots.emplace(std::to_string(item_id), item);
     }
     return {dogs, loots};
 }

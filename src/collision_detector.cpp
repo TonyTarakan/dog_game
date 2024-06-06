@@ -6,8 +6,7 @@ namespace collision_detector {
 CollectionResult TryCollectPoint(model::Point2D a, model::Point2D b, model::Point2D c) {
     // Проверим, что перемещение ненулевое.
     // Тут приходится использовать строгое равенство, а не приближённое,
-    // пскольку при сборе заказов придётся учитывать перемещение даже на небольшое
-    // расстояние.
+    // поскольку при сборе заказов придётся учитывать перемещение даже на небольшое расстояние.
     assert(b.x != a.x || b.y != a.y);
     const double u_x = c.x - a.x;
     const double u_y = c.y - a.y;
@@ -22,8 +21,8 @@ CollectionResult TryCollectPoint(model::Point2D a, model::Point2D b, model::Poin
     return CollectionResult(sq_distance, proj_ratio);
 }
 
-// TODO: разобраться в решении
-std::vector<GatheringEvent> FindGatherEvents(const ItemGathererProvider& provider) {
+// TODO: refactor
+std::vector<GatheringEvent> FindSortedGatherEvents(const ItemGathererProvider& provider) {
     std::vector<GatheringEvent> detected_events;
 
     for (size_t g = 0; g < provider.GatherersCount(); ++g) {

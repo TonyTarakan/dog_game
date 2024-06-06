@@ -126,25 +126,26 @@ void GameSession::Tick(double tick_duration_ms) {
     }
 
     std::vector<Item> item_vec;
-    for (const auto& l : loots_) {
-        auto item = Item{l.first, {l.second.pos.x, l.second.pos.y}, LOOT_WIDTH};
+    for (const auto& [loot_id, loot_item] : loots_) {
+        Item item{
+            loot_id,
+            {loot_item.pos.x, loot_item.pos.y},
+            LOOT_WIDTH
+        };
         item_vec.emplace_back(item);
     }
-    const uint64_t OFFICE_ITEM_TRAIT = 0;
-    for (const auto& o : game_->FindMap(*map_id_)->GetOffices()) {
-        auto item = Item{
+    constexpr uint64_t OFFICE_ITEM_TRAIT = 0;
+    for (const auto& office : game_->FindMap(*map_id_)->GetOffices()) {
+        Item item{
             OFFICE_ITEM_TRAIT,
-            {static_cast<double>(o.GetPosition().x),
-             static_cast<double>(o.GetPosition().y)},
+            {static_cast<double>(office.GetPosition().x), static_cast<double>(office.GetPosition().y)},
             OFFICE_WIDTH
         };
         item_vec.emplace_back(item);
     }
 
     Provider provider{item_vec, gatherers};
-    auto time_sorted_events = FindGatherEvents(provider);
-
-    for (auto [item_id, gatherer_id, time] : time_sorted_events) {
+    for (auto [item_id, gatherer_id, time] : FindSortedGatherEvents(provider)) {
         auto& dog = dogs_.at(gatherer_id);
 
         if (item_id != OFFICE_ITEM_TRAIT) { // item is loot
@@ -170,7 +171,7 @@ void GameSession::Tick(double tick_duration_ms) {
 }
 
 Point2D GameSession::GeneratePosition() const {
-    const auto &roads = game_->FindMap(*map_id_)->GetRoads();
+    const auto& roads = game_->FindMap(*map_id_)->GetRoads();
 
     if (game_->HasRandomSpawn()) {
         std::random_device rdev;
@@ -178,8 +179,8 @@ Point2D GameSession::GeneratePosition() const {
         std::uniform_int_distribution<> int_dist(0, static_cast<int>(roads.size() - 1));
 
         const auto random_road = roads.at(int_dist(generator));
-        const auto &start = random_road.GetStart();
-        const auto &end = random_road.GetEnd();
+        const auto& start = random_road.GetStart();
+        const auto& end = random_road.GetEnd();
 
         std::uniform_real_distribution<> x_dist(std::min(start.x, end.x), std::max(start.x, end.x));
         double x = x_dist(generator);

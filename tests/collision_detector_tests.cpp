@@ -12,7 +12,7 @@
 using namespace collision_detector;
 using namespace model;
 
-// тесты для функции collision_detector::FindGatherEvents
+// тесты для функции collision_detector::FindSortedGatherEvents
 namespace Catch {
 
 }  // namespace Catch
@@ -68,7 +68,7 @@ SCENARIO("Collision detector", "[collision_detector]") {
             CHECK_THROWS(provider.GetGatherer(0));
         }
         AND_THEN("no events are found") {
-            CHECK_THAT(FindGatherEvents(provider), IsEmpty());
+            CHECK_THAT(FindSortedGatherEvents(provider), IsEmpty());
         }
     }
 
@@ -84,7 +84,7 @@ SCENARIO("Collision detector", "[collision_detector]") {
             CHECK_NOTHROW(provider.GetGatherer(0));
         }
         AND_THEN("no events are found") {
-            CHECK_THAT(FindGatherEvents(provider), IsEmpty());
+            CHECK_THAT(FindSortedGatherEvents(provider), IsEmpty());
         }
     }
 
@@ -110,7 +110,7 @@ SCENARIO("Collision detector", "[collision_detector]") {
             }));
         }
         AND_THEN("no events are found") {
-            CHECK_THAT(FindGatherEvents(provider), IsEmpty());
+            CHECK_THAT(FindSortedGatherEvents(provider), IsEmpty());
         }
     }
 
@@ -124,7 +124,7 @@ SCENARIO("Collision detector", "[collision_detector]") {
         std::vector<Gatherer> gatherers{ Gatherer{pos_zero, pos_zero, gw} };
         gather_tests::Provider provider(items, gatherers);
         AND_THEN("no events are found") {
-            CHECK_THAT(FindGatherEvents(provider), IsEmpty());
+            CHECK_THAT(FindSortedGatherEvents(provider), IsEmpty());
         }
     }
 
@@ -139,7 +139,7 @@ SCENARIO("Collision detector", "[collision_detector]") {
         std::vector<Gatherer> gatherers{ Gatherer{pos_gather_start, pos_gather_end, gw} };
         gather_tests::Provider provider(items, gatherers);
         THEN("Gather event is found") {
-            CHECK(FindGatherEvents(provider).size() == 1);
+            CHECK(FindSortedGatherEvents(provider).size() == 1);
         }
     }
 
@@ -154,7 +154,7 @@ SCENARIO("Collision detector", "[collision_detector]") {
         std::vector<Gatherer> gatherers{ Gatherer{pos_gather_start, pos_gather_end, gw} };
         gather_tests::Provider provider(items, gatherers);
         THEN("Gather event is found") {
-            CHECK(FindGatherEvents(provider).size() == 1);
+            CHECK(FindSortedGatherEvents(provider).size() == 1);
         }
     }
 
@@ -169,7 +169,7 @@ SCENARIO("Collision detector", "[collision_detector]") {
         std::vector<Gatherer> gatherers{ Gatherer{pos_gather_start, pos_gather_end, gw} };
         gather_tests::Provider provider(items, gatherers);
         THEN("Gather event is found") {
-            CHECK(FindGatherEvents(provider).size() == 1);
+            CHECK(FindSortedGatherEvents(provider).size() == 1);
         }
     }
 
@@ -184,7 +184,7 @@ SCENARIO("Collision detector", "[collision_detector]") {
         std::vector<Gatherer> gatherers{ Gatherer{pos_gather_start, pos_gather_end, gw} };
         gather_tests::Provider provider(items, gatherers);
         THEN("Gather event is found") {
-            CHECK(FindGatherEvents(provider).size() == 1);
+            CHECK(FindSortedGatherEvents(provider).size() == 1);
         }
     }
 
@@ -199,7 +199,7 @@ SCENARIO("Collision detector", "[collision_detector]") {
         std::vector<Gatherer> gatherers{ Gatherer{pos_gather_start, pos_gather_end, gw} };
         gather_tests::Provider provider(items, gatherers);
         THEN("Gather event is not found") {
-            CHECK(FindGatherEvents(provider).empty());
+            CHECK(FindSortedGatherEvents(provider).empty());
         }
     }
 
@@ -216,7 +216,7 @@ SCENARIO("Collision detector", "[collision_detector]") {
         std::vector<Gatherer> gatherers{ Gatherer{pos_gather_start, pos_gather_end, gw} };
         gather_tests::Provider provider(items, gatherers);
         THEN("Gather events are found, items 0 and 1") {
-            auto events = FindGatherEvents(provider);
+            auto events = FindSortedGatherEvents(provider);
             CHECK(events.size() == 2);
             CHECK(events.at(0).item_id == 0);
             CHECK(events.at(1).item_id == 1);
