@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # To generate uml diagram
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# TODO: fix conan 1->2 migration
+include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
+
 find_package(Boost)
 find_package(Catch2)
 find_package(libpqxx)
