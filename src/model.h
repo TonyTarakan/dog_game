@@ -54,7 +54,6 @@ public:
     [[nodiscard]] Id::ValueType GetIdValue() const;
     [[nodiscard]] Map::Id GetMapId() const;
     [[nodiscard]] std::vector<Dog> GetDogs() const;
-    void SetDogs(const std::vector<Dog>& dogs);
     [[nodiscard]] std::map<uint64_t, LootItem> GetLoots() const;
     void SetLoots(const std::map<uint64_t, LootItem>& loots);
     void Tick(double tick_duration_ms);

@@ -1,5 +1,5 @@
 /* TODO
- * - Improve architecture
+ * - Improve architecture using clang-uml
  * - Add more unit tests
  * - Add benchmarks and load tests
  * - Group pytest tests
@@ -164,7 +164,7 @@ int main(int argc, const char* argv[]) {
         http_handler::RequestHandler handler{api_global_strand, app, static_content_path};
 
         const auto address = net::ip::make_address("0.0.0.0");
-        constexpr net::ip::port_type port = 8080;
+        constexpr net::ip::port_type port = 8080; // TODO: add arg
         http_server::ServeHttp(
             ioc,
             {address, port},

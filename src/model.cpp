@@ -92,10 +92,6 @@ std::vector<Dog> GameSession::GetDogs() const {
     return dogs_;
 }
 
-void GameSession::SetDogs(const std::vector<Dog>& dogs) {
-    dogs_ = dogs;
-}
-
 std::map<uint64_t, LootItem> GameSession::GetLoots() const {
     return loots_;
 }

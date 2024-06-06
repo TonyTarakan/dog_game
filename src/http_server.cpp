@@ -40,9 +40,7 @@ void SessionBase::OnRead(beast::error_code ec, [[maybe_unused]] std::size_t byte
 }
 
 void SessionBase::Close() {
-    beast::error_code ec;
-    stream_.socket().shutdown(tcp::socket::shutdown_send, ec);
-    // TODO: проверить код ошибки ec и зарефакторить прекоды
+    stream_.socket().shutdown(tcp::socket::shutdown_send);
 }
 
 

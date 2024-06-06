@@ -1,12 +1,11 @@
-#include "json_loader.h"
-#include "model_json.h"
-
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <boost/json.hpp>
-#include <boost/json/value_to.hpp>
 
+#include <boost/json.hpp>
+
+#include "json_loader.h"
+#include "model_json.h"
 
 namespace json = boost::json;
 
@@ -15,14 +14,15 @@ namespace json_loader {
 constexpr int MS_PER_SEC = 1000;
 
 std::shared_ptr<model::Game> LoadGame(const std::filesystem::path& json_path) {
-    // Загрузить содержимое файла json_path, например, в виде строки
+
+    // TODO: spaghetti code, refactor
+
     std::ifstream json_file(json_path);
     if (!json_file.is_open()) {
         throw std::runtime_error("Failed to open json file: " + json_path.string());
     }
     std::string json_string((std::istreambuf_iterator<char>(json_file)), std::istreambuf_iterator<char>());
 
-    // Распарсить строку как JSON, используя boost::json::parse
     const auto game_json = json::parse(json_string);
 
     auto game = std::make_shared<model::Game>();
@@ -31,7 +31,6 @@ std::shared_ptr<model::Game> LoadGame(const std::filesystem::path& json_path) {
         game->SetDefaultBagSize(json::value_to<size_t>(game_json.at("defaultBagCapacity")));
     }
 
-    // TODO: refactor
     auto loot_sec_interval = json::value_to<double>(game_json.at("lootGeneratorConfig").at("period"));
     std::chrono::milliseconds loot_interval(static_cast<int>(loot_sec_interval * MS_PER_SEC));
     auto loot_chance = json::value_to<double>(game_json.at("lootGeneratorConfig").at("probability"));

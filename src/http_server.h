@@ -15,14 +15,14 @@
 namespace http_server {
 
 namespace net = boost::asio;
-using tcp = net::ip::tcp;
 namespace beast = boost::beast;
 namespace sys = boost::system;
 namespace http = beast::http;
 
-using namespace std::chrono;
-
+using tcp = net::ip::tcp;
 using HttpRequest = http::request<http::string_body>;
+
+using namespace std::chrono;
 
 void ReportError(beast::error_code ec, std::string_view what);
 

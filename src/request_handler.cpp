@@ -32,8 +32,7 @@ bool IsSubPath(fs::path path, fs::path base) {
 }
 
 ContentType::CON_TYPE GetContentType(const fs::path& file_path) {
-    // don't knot what's faster on this size: map or unordered_map.
-    // cache-friendly flat_map is unavailable yet
+    // TODO: replace to cache-friendly flat_map
     static const std::map<fs::path::string_type, ContentType::CON_TYPE> ext_to_ct_map = {
         {".html", ContentType::TEXT_HTML},
         {".css", ContentType::TEXT_CSS},
@@ -134,7 +133,7 @@ StrResp APIHandler::GetMapUseCase(StrReqt &&req) const {
     return BadResponse(http::status::not_found, {"mapNotFound", "Map not found"});
 }
 
-
+// TODO: Check for library function
 static std::optional<int> GetUrlParam(const std::string& params, const std::string& name) {
     boost::regex expr{"(\\?|&|^|,)"s + name + "=(\\w+)(\\&|$)"s };
     boost::smatch what;
@@ -143,7 +142,6 @@ static std::optional<int> GetUrlParam(const std::string& params, const std::stri
     }
     return std::nullopt;
 }
-
 
 StrResp APIHandler::GetRecordsUseCase(http_handler::StrReqt &&req) const {
 

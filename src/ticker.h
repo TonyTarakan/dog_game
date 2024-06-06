@@ -17,6 +17,7 @@ class Ticker : public std::enable_shared_from_this<Ticker> {
 public:
     using Strand = net::strand<net::io_context::executor_type>;
     using Handler = std::function<void(std::chrono::milliseconds delta)>;
+    using Clock = std::chrono::steady_clock;
 
     // Функция handler будет вызываться внутри strand с интервалом period
     Ticker(Strand& strand, std::chrono::milliseconds period, Handler handler)
@@ -56,14 +57,12 @@ private:
             ScheduleTick();
         }
     }
-
-    using Clock = std::chrono::steady_clock;
-
+private:
     Strand& strand_;
     std::chrono::milliseconds period_;
     net::steady_timer timer_{strand_};
     Handler handler_;
-    std::chrono::steady_clock::time_point last_tick_;
+    Clock::time_point last_tick_;
 };
 
 
