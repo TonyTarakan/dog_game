@@ -82,7 +82,7 @@ class Game : public std::enable_shared_from_this<Game> {
     using Sessions = std::map<GameSession::Id::ValueType, std::shared_ptr<GameSession>>;
 public:
     void AddMap(const Map& map);
-    [[nodiscard]] std::shared_ptr<Map> FindMap(const Map::Id::ValueType& id) const;
+    [[nodiscard]] std::shared_ptr<Map> FindMap(const Map::Id& id) const;
     [[nodiscard]] std::shared_ptr<GameSession> GetSession(const Map& map);
     [[nodiscard]] Sessions GetSessions() const;
     [[nodiscard]] Maps GetMaps() const;

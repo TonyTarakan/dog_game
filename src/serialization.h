@@ -108,14 +108,14 @@ public:
     GameSessionRepr() = default;
 
     explicit GameSessionRepr(const model::GameSession& game_session)
-            : map_id_val_(*game_session.GetMapId()) {
+            : map_id_val_(*game_session.GetMapId())
+            , id_val_(game_session.GetIdValue()) {
         for (const auto& [id, loot] : game_session.GetLoots()) {
             loots_.emplace_back(loot);
         }
         for (const auto& dog : game_session.GetDogs()) {
             dogs_repr_.emplace_back(dog);
-        }
-        id_val_ = game_session.GetIdValue();
+        };
     }
 
     [[nodiscard]] std::shared_ptr<model::GameSession> Restore(std::shared_ptr<model::Game> game) const {
@@ -177,11 +177,11 @@ private:
 class PlayerRepr {
 public:
     PlayerRepr() = default;
-    explicit PlayerRepr(const app::Player& player) {
-        id_val_ = player.GetIdValue();
-        sess_id_val_ = *player.GetSessionId();
-        name_ = player.GetDogName();
-        token_ = player.GetTokenValue();
+    explicit PlayerRepr(const app::Player& player)
+        : id_val_(player.GetIdValue())
+        , sess_id_val_(*player.GetSessionId())
+        , name_(player.GetDogName())
+        , token_(player.GetTokenValue()) {
     }
 
     [[nodiscard]] app::Player Restore() const {

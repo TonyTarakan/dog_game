@@ -27,7 +27,7 @@ GameSession::GameSession(Id::ValueType id, std::shared_ptr<Game> game, Map::Id m
 }
 
 void GameSession::AddDog(Dog::Id::ValueType id, const std::string &name) {
-    Dog dog{id, name, GeneratePosition(), game_->FindMap(*map_id_)->GetBagSize()};
+    Dog dog{id, name, GeneratePosition(), game_->FindMap(map_id_)->GetBagSize()};
     dog.SetDirection(Direction::NORTH);
     dogs_.emplace_back(dog);
 }
@@ -62,7 +62,7 @@ void GameSession::SetDogDirection(Dog::Id::ValueType id, Direction direction) {
     }
 
     dog_it->SetDirection(direction);
-    const auto s = game_->FindMap(*map_id_)->GetSpeed();
+    const auto s = game_->FindMap(map_id_)->GetSpeed();
     switch (direction) {
         case Direction::NORTH:
             dog_it->SetSpeed({0, -s});
@@ -129,7 +129,7 @@ void GameSession::Tick(double tick_duration_ms) {
     }
 
     constexpr uint64_t OFFICE_ITEM_TRAIT = 0;
-    for (const auto& office : game_->FindMap(*map_id_)->GetOffices()) {
+    for (const auto& office : game_->FindMap(map_id_)->GetOffices()) {
         Item item{
             OFFICE_ITEM_TRAIT,
             {static_cast<double>(office.GetPosition().x), static_cast<double>(office.GetPosition().y)},
@@ -165,7 +165,7 @@ void GameSession::Tick(double tick_duration_ms) {
 }
 
 Point2D GameSession::GeneratePosition() const {
-    const auto& roads = game_->FindMap(*map_id_)->GetRoads();
+    const auto& roads = game_->FindMap(map_id_)->GetRoads();
 
     if (game_->HasRandomSpawn()) {
         std::random_device rdev;
@@ -207,7 +207,7 @@ void GameSession::MoveDog(model::Dog &dog, double tick_ms) {
     }
 
     // collision check
-    auto roads = game_->FindMap(*map_id_)->GetRoads();
+    auto roads = game_->FindMap(map_id_)->GetRoads();
     auto start_road{std::find_if(roads.begin(), roads.end(), [&start_position](const Road& road) {
         return road.GetBounds().Contains(start_position);
     })};
@@ -313,9 +313,8 @@ std::shared_ptr<GameSession> Game::FindSession(const Map& map) {
     return nullptr;
 }
 
-std::shared_ptr<Map> Game::FindMap(const Map::Id::ValueType& id) const {
-    Map::Id map_id{id};
-    if (auto it = map_id_to_index_.find(map_id); it != map_id_to_index_.end()) {
+std::shared_ptr<Map> Game::FindMap(const Map::Id& id) const {
+    if (auto it = map_id_to_index_.find(id); it != map_id_to_index_.end()) {
         return std::make_shared<Map>(maps_.at(it->second));
     }
     return nullptr;

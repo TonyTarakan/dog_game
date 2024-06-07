@@ -123,9 +123,8 @@ StrResp APIHandler::GetMapUseCase(StrReqt &&req) const {
         return GetMapsListUseCase();
     }
 
-    std::string map_id_str{url.substr(maps_url.length() + 1)};
-
-    auto map = app_.GetGame()->FindMap(map_id_str);
+    const std::string map_id_str{url.substr(maps_url.length() + 1)};
+    auto map = app_.GetGame()->FindMap(model::Map::Id{map_id_str}); // TODO: does it worsen the arch?
     if (map) {
         auto loot = app_.GetGame()->GetLootData(map->GetId());
         return GoodResponse(json::serialize(json::value_from(std::make_pair(*map, loot))));
@@ -180,7 +179,7 @@ StrResp APIHandler::JoinGameUseCase(StrReqt &&req) {
             return BadResponse(http::status::bad_request, {"invalidArgument", "Invalid name"});
         }
 
-        auto map = app_.GetGame()->FindMap(map_id_str);
+        auto map = app_.GetGame()->FindMap(model::Map::Id{map_id_str});
         if (!map) {
             return BadResponse(http::status::not_found, {"mapNotFound", "Map not found"});
         }
@@ -234,7 +233,7 @@ StrResp APIHandler::MovePlayerUseCase(StrReqt &&req) {
                     throw std::runtime_error("Invalid direction");
                 }
 
-                // TODO: check and maybe refactor
+                // TODO: maybe refactor. PlayerID and DogID are the same(value) so far
                 auto sess_id = player_ptr->GetSessionId();
                 auto session = app_.GetGame()->GetSessions().at(*sess_id);
                 session->SetDogDirection(player_ptr->GetIdValue(), dir_map.at(dir_str));
