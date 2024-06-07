@@ -50,34 +50,31 @@ void GameSession::SetDogDirection(Dog::Id::ValueType id, Direction direction) {
         return dog.GetIdValue() == id;
     });
 
-    if (dog_it != dogs_.end()) {
-
-        if (direction == Direction::NONE) {
-            dog_it->SetSpeed({0, 0});
-            return;
-        }
-
-        dog_it->SetDirection(direction);
-        const auto s = game_->FindMap(*map_id_)->GetSpeed();
-        switch (direction) {
-            case Direction::NORTH:
-                dog_it->SetSpeed({0, -s});
-                return;
-            case Direction::SOUTH:
-                dog_it->SetSpeed({0, s});
-                return;
-            case Direction::WEST:
-                dog_it->SetSpeed({-s, 0});
-                return;
-            case Direction::EAST:
-                dog_it->SetSpeed({s, 0});
-                return;
-            default:
-                throw std::runtime_error("Unknown direction");
-        }
+    if (dog_it == dogs_.end()) {
+        throw std::runtime_error("Dog not found");
     }
 
-    throw std::runtime_error("Dog not found");
+    // TODO: maybe refactor?
+
+    if (direction == Direction::NONE) {
+        dog_it->SetSpeed({0, 0});
+        return;
+    }
+
+    dog_it->SetDirection(direction);
+    const auto s = game_->FindMap(*map_id_)->GetSpeed();
+    switch (direction) {
+        case Direction::NORTH:
+            dog_it->SetSpeed({0, -s});
+        case Direction::SOUTH:
+            dog_it->SetSpeed({0, s});
+        case Direction::WEST:
+            dog_it->SetSpeed({-s, 0});
+        case Direction::EAST:
+            dog_it->SetSpeed({s, 0});
+        default:
+            throw std::runtime_error("Unknown direction");
+    }
 }
 
 GameSession::Id::ValueType GameSession::GetIdValue() const {
@@ -130,6 +127,7 @@ void GameSession::Tick(double tick_duration_ms) {
         };
         item_vec.emplace_back(item);
     }
+
     constexpr uint64_t OFFICE_ITEM_TRAIT = 0;
     for (const auto& office : game_->FindMap(*map_id_)->GetOffices()) {
         Item item{

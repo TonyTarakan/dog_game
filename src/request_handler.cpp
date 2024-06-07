@@ -1,19 +1,20 @@
-#include "request_handler.h"
-#include "handler_serializer.h"
-
+#include <filesystem>
 #include <optional>
 #include <string_view>
+
 #include <boost/json.hpp>
 #include <boost/system.hpp>
 #include <boost/beast.hpp>
 #include <boost/regex.hpp>
-#include <filesystem>
 
-namespace json = boost::json;
+#include "request_handler.h"
+#include "handler_serializer.h"
+
+namespace fs = std::filesystem;
 namespace beast = boost::beast;
+namespace json = boost::json;
 namespace http = beast::http;
 namespace sys = boost::system;
-namespace fs = std::filesystem;
 
 namespace http_handler {
 

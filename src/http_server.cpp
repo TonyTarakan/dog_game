@@ -17,7 +17,7 @@ void SessionBase::Read() {
     using namespace std::literals;
     // Очищаем запрос от прежнего значения (метод Read может быть вызван несколько раз)
     request_ = {};
-    stream_.expires_after(30s);
+    stream_.expires_after(30s); // TODO: magic num
     // Считываем request_ из stream_, используя buffer_ для хранения считанных данных
     http::async_read(stream_, buffer_, request_, beast::bind_front_handler(&SessionBase::OnRead, GetSharedThis()));
 }

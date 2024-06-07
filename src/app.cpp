@@ -26,7 +26,7 @@ Token Player::GenerateToken() {
     std::random_device rdev;
     std::mt19937_64 gen(rdev());
     std::uniform_int_distribution<std::mt19937_64::result_type> dist;
-    return {std::format("{:0>16x}{:0>16x}", dist(gen), dist(gen))};
+    return {std::format("{:0>16x}{:0>16x}", dist(gen), dist(gen))}; // TODO: magic num
 }
 
 /*
@@ -90,7 +90,7 @@ void App::RestorePlayers(const Players& players) {
 std::map<std::string, std::string> App::GetPlayersInfo() const {
     std::map<std::string, std::string> players_info;
     for (const auto& [id, player] : players_.GetPlayers()) {
-        players_info[std::to_string(id)] = R"({"name":")" + player->GetDogName() + R"("})";
+        players_info[std::to_string(id)] = R"({"name":")" + player->GetDogName() + R"("})"; // TODO: format
     }
     return players_info;
 }
